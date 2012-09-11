@@ -1,0 +1,14 @@
+@(repos: List[play.api.libs.json.JsValue], keyword: String)
+
+@import views.html.helper._
+
+@main("Search results for " + keyword) {
+<ul>
+  @for(repo <- repos) {
+  <li>
+    @repositoryLink(repo \ "owner", repo \ "name")
+  </li>
+  }
+</ul>
+}
+

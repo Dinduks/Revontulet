@@ -1,0 +1,8 @@
+@(username: play.api.libs.json.JsValue, repositoryName: play.api.libs.json.JsValue)
+
+@defining(username.toString.replaceAll("\"", "") + "/" + repositoryName.toString.replaceAll("\"", "")) { repositoryFullName =>
+  <a href="/@repositoryFullName">
+    @repositoryFullName
+  </a>
+}
+
