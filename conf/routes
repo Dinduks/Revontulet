@@ -1,0 +1,3 @@
+GET     /                           controllers.Application.index
+GET     /search/:repo               controllers.Application.search(repo: Long)
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
