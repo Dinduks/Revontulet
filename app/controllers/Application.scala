@@ -50,12 +50,13 @@ object Application extends Controller {
           val commitAuthor = commit \ "commit" \ "author"
           val author       = commit \ "author"
           val contributor = Contributor(
-            Some((author \ "login").toString),
-            Some((commitAuthor \ "name").toString),
-            Some((commitAuthor \ "email").toString),
-            Some((author \ "avatar_url").toString),
+            (author \ "login").asOpt[String],
+            (commitAuthor \ "name").asOpt[String],
+            (commitAuthor \ "email").asOpt[String],
+            (author \ "avatar_url").asOpt[String],
             1
           )
+
           committersList += ((commitAuthor \ "email").toString -> contributor)
         }
       }

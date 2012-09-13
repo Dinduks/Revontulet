@@ -26,11 +26,16 @@ object Contributor {
     avatarUrl: Option[String],
     contributionsCounter: Int
   ) = {
+    val url = username match {
+      case None => None
+      case Some(username) => Some("https://github.com/%s" format Util.trim(username, '"'))
+    }
+
     new Contributor(
       username,
       name,
       email,
-      Some("https://github.com/" + Util.trim(username.get, '"')),
+      url,
       (avatarUrl),
       contributionsCounter
     )
