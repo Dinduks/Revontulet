@@ -17,7 +17,7 @@ object Application extends Controller {
     val githubSearchReposPath = Play.current.configuration.getString("github.searchReposPath").get
 
     Async {
-      WS.url(githubApiUrl + githubSearchReposPath + keyword).get().map { response =>
+      WS.url(githubSearchReposPath.format(githubApiUrl, keyword)).get().map { response =>
         val repos = (response.json \ "repositories")
         Ok(views.html.searchResults(repos.as[List[JsValue]], keyword))
       }
@@ -26,9 +26,10 @@ object Application extends Controller {
 
   def repoInfo(username: String, repositoryName: String) = Action {
     val githubApiUrl = Play.current.configuration.getString("github.apiUrl").get
+    val githubGetRepoCommitsPath = Play.current.configuration.getString("github.getRepoCommitsPath").get
 
     Async {
-      WS.url(githubApiUrl + "/repos/" + username + "/" + repositoryName + "/commits").get().map { response =>
+      WS.url(githubGetRepoCommitsPath.format(githubApiUrl, username, repositoryName)).get().map { response =>
         val commits = (response.json)
         val contributorsList = getSortedCommittersList(commits)
         Ok(views.html.showRepoInfo(username, repositoryName, contributorsList))
