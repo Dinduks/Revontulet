@@ -17,9 +17,8 @@ object Application extends Controller {
     val githubSearchReposPath = Play.current.configuration.getString("github.searchReposPath").get
 
     Async {
-      WS.url(githubSearchReposPath.format(githubApiUrl, keyword)).get().map { response =>
-        val repos = (response.json \ "repositories")
-        Ok(views.html.searchResults(repos.as[List[JsValue]], keyword))
+      Repository.searchRepo(keyword, githubApiUrl, githubSearchReposPath).map { repos =>
+        Ok(views.html.searchResults(repos, keyword))
       }
     }
   }

@@ -1,4 +1,4 @@
-@(repos: List[play.api.libs.json.JsValue], keyword: String)
+@(repos: List[Repository], keyword: String)
 
 @import views.html.helper._
 
@@ -6,7 +6,7 @@
 <ul>
   @for(repo <- repos) {
   <li>
-    @repositoryLink(repo \ "owner", repo \ "name")
+    @repositoryLink(repo)
   </li>
   }
 </ul>
