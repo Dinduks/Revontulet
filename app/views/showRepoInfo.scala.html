@@ -1,6 +1,7 @@
 @(username        : String,
   repositoryName  : String,
-  contributorsList: Map[String, Contributor])
+  contributorsList: Map[String, Contributor],
+  commitsCount: Int)
 
 @import views.html.helper._
 
@@ -10,7 +11,7 @@
     <ul>
       @for((username, contributor) <- contributorsList) {
       <li>
-        @contributorInfo(contributor)
+        @contributorInfo(contributor, commitsCount)
       </li>
       }
     </ul>

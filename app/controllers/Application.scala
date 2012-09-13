@@ -31,8 +31,9 @@ object Application extends Controller {
     Async {
       WS.url(githubGetRepoCommitsPath.format(githubApiUrl, username, repositoryName)).get().map { response =>
         val commits = (response.json)
+        val commitsCount = commits.as[List[JsValue]].length
         val contributorsList = getSortedCommittersList(commits)
-        Ok(views.html.showRepoInfo(username, repositoryName, contributorsList))
+        Ok(views.html.showRepoInfo(username, repositoryName, contributorsList, commitsCount))
       }
     }
   }

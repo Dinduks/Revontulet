@@ -1,11 +1,13 @@
-@(contributor: Contributor)
+@(contributor: Contributor, commitsCount: Int)
 
 @import revontulet.Util
 
-<a href="@contributor.url.getOrElse("https://github.com")">
+@if(contributor.url) { <a href="@contributor.url.getOrElse("https://github.com")"> }
+
   @Util.trim(contributor.username.getOrElse(contributor.name.get), '"')
   -
-  @contributor.contributionsCounter commit among 30
+  @contributor.contributionsCounter commit among @commitsCount
 
-  (@((contributor.contributionsCounter.toFloat / 30 * 100).ceil)%)
-</a>
+  (@((contributor.contributionsCounter.toFloat / commitsCount * 100).ceil)%)
+
+@if(contributor.url) { </a> }
