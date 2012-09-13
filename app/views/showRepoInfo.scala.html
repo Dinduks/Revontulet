@@ -1,0 +1,19 @@
+@(username        : String,
+  repositoryName  : String,
+  contributorsList: Map[String, Contributor])
+
+@import views.html.helper._
+
+@main(username + "/" + repositoryName + " - Repository info") {
+  <h2>Contributors</h2>
+  <div>
+    <ul>
+      @for((username, contributor) <- contributorsList) {
+      <li>
+        @contributorInfo(contributor)
+      </li>
+      }
+    </ul>
+  </div>
+}
+

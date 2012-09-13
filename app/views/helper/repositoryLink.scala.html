@@ -1,6 +1,8 @@
 @(username: play.api.libs.json.JsValue, repositoryName: play.api.libs.json.JsValue)
 
-@defining(username.toString.replaceAll("\"", "") + "/" + repositoryName.toString.replaceAll("\"", "")) { repositoryFullName =>
+@import revontulet.Util
+
+@defining(Util.trim(username.toString, '"') + "/" + Util.trim(repositoryName.toString, '"')) { repositoryFullName =>
   <a href="/@repositoryFullName">
     @repositoryFullName
   </a>
