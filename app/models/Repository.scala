@@ -56,14 +56,19 @@ object Repository {
   }
 
   def computeContributors(commits: List[Commit]): List[Contributor] = {
-    var contributorsMap: Map[String, Contributor] = Map()
-    for (commit <- commits; author <- commit.author) {
+    type ContributorsMap = Map[String, Contributor]
+
+    def f(commits: List[Commit], contributorsMap: ContributorsMap): ContributorsMap = {
+      if (commits.isEmpty) return contributorsMap
+
+      val commit = commits.head
+      val author = commit.author.getOrElse(new User)
       val key = author.username.getOrElse(author.email.getOrElse(""))
 
       contributorsMap.get(key) match {
         case Some(contributor) => {
           val newContributor = contributor.copy(contributionsCounter = contributor.contributionsCounter + 1)
-          contributorsMap = contributorsMap - key + (key -> newContributor)
+          f(commits.filterNot(c => c == commit), contributorsMap - key + (key -> newContributor))
         }
         case None => {
           val contributor = Contributor(
@@ -71,15 +76,14 @@ object Repository {
             (commit.author.getOrElse(new User).name),
             (commit.author.getOrElse(new User).email),
             (commit.author.getOrElse(new User).avatarUrl),
-            1
-          )
+            1)
 
-          contributorsMap += (key -> contributor)
+          f(commits.filterNot(c => c == commit), contributorsMap + (key -> contributor))
         }
       }
     }
 
-    contributorsMap.map{ case(k, v) => (v) }.toList
+    f(commits, Map.empty).map{ case(k, v) => (v) }.toList
   }
 }
 
