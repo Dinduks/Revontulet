@@ -1,0 +1,28 @@
+body {
+  padding: 2%;
+}
+
+.hero-unit {
+  padding: 4%;
+  height: 4em;
+}
+
+.hero-unit p {
+  height: 100%;
+  width: 100%;
+}
+
+#keyword {
+  width: 98%;
+  height: 81%;
+  font-size: 1.5em;
+  line-height: 1.5em;
+  background-repeat: no-repeat;
+  background-position: 98% 10px;
+}
+
+ul li {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
