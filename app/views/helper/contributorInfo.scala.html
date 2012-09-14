@@ -4,7 +4,7 @@
 
 @if(contributor.url) { <a href="@contributor.url.getOrElse("https://github.com")"> }
 
-  @Util.trim(contributor.username.getOrElse(contributor.name.get), '"')
+  @Util.trim(contributor.username.getOrElse(contributor.name.get.toString), '"')
   -
   @contributor.contributionsCounter commit among @commitsCount
 

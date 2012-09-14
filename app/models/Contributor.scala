@@ -36,7 +36,7 @@ object Contributor {
       name,
       email,
       url,
-      (avatarUrl),
+      avatarUrl,
       contributionsCounter
     )
   }
