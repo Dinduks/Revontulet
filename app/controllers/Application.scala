@@ -29,7 +29,7 @@ object Application extends Controller {
 
     val repo = new Repository(Some(username), Some(repositoryName), None, None)
     Async {
-      repo.getCommits(githubApiUrl, githubGetRepoCommitsPath).map { repo =>
+      repo.getAllInfo(githubApiUrl, githubGetRepoCommitsPath).map { repo =>
         Ok(views.html.showRepoInfo(repo))
       }
     }
