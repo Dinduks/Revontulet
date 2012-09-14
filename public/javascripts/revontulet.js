@@ -2,7 +2,7 @@
 
 $(document).ready(function () {
     $("#searchForm").submit(function () {
-        window.location.href  = "/search/" + $("#keyword").val();
+        if ($("#keyword").val()) window.location.href  = "/search/" + $("#keyword").val();
         return false;
     });
 });

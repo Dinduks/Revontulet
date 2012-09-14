@@ -1,0 +1,15 @@
+@(repos: List[Repository], keyword: String)
+
+@import views.html.helper._
+
+@main("Search results for " + keyword) {
+    <h2>@("Search results for %s".format(keyword))</h2>
+    <ul>
+        @for(repo <- repos) {
+            <li>
+                @repositoryLink(repo)
+            </li>
+        }
+    </ul>
+}
+

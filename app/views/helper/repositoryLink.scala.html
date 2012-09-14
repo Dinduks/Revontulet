@@ -3,7 +3,7 @@
 @import revontulet.Util
 
 @defining(Util.trim(repo.owner.getOrElse("").toString, '"') + "/" + Util.trim(repo.name.getOrElse("").toString, '"')) { repositoryFullName =>
-  <a href="/@repositoryFullName">
+  <a href="@routes.Application.repoInfo(repo.owner.get, repo.name.get)">
     @repositoryFullName
   </a>
 }

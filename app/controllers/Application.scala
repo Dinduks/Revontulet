@@ -12,25 +12,37 @@ object Application extends Controller {
     Ok(views.html.index())
   }
 
-  def search(keyword: String) = Action {
+  def getGitHubApiConfig: (String, String, String) = {
     val githubApiUrl = Play.current.configuration.getString("github.apiUrl").get
     val githubSearchReposPath = Play.current.configuration.getString("github.searchReposPath").get
+    val githubGetRepoCommitsPath = Play.current.configuration.getString("github.getRepoCommitsPath").get
+
+    (githubApiUrl, githubSearchReposPath, githubGetRepoCommitsPath)
+  }
+
+  def search(keyword: String) = Action {
+    val (githubApiUrl, githubSearchReposPath, githubGetRepoCommitsPath) = getGitHubApiConfig
 
     Async {
       Repository.searchRepo(keyword, githubApiUrl, githubSearchReposPath).map { repos =>
-        Ok(views.html.searchResults(repos, keyword))
+        repos match {
+          case Nil => NotFound(views.html.searchResultsNotFound(keyword))
+          case _   => Ok(views.html.searchResultsOk(repos, keyword))
+        }
       }
     }
   }
 
   def repoInfo(username: String, repositoryName: String) = Action {
-    val githubApiUrl = Play.current.configuration.getString("github.apiUrl").get
-    val githubGetRepoCommitsPath = Play.current.configuration.getString("github.getRepoCommitsPath").get
+    val (githubApiUrl, githubSearchReposPath, githubGetRepoCommitsPath) = getGitHubApiConfig
 
     val repo = new Repository(Some(username), Some(repositoryName), None, None)
     Async {
       repo.getAllInfo(githubApiUrl, githubGetRepoCommitsPath).map { repo =>
-        Ok(views.html.showRepoInfo(repo))
+        repo match {
+          case None       => NotFound(views.html.showRepoInfoNotFound())
+          case Some(repo) => Ok(views.html.showRepoInfoOk(repo))
+        }
       }
     }
   }

@@ -4,7 +4,7 @@ import play.api.libs.ws._
 import play.api.libs.json._
 import play.api.libs.concurrent._
 
-class Repository(
+case class Repository(
   val owner:        Option[String]    = None,
   val name:         Option[String]    = None,
   val language:     Option[String]    = None,
@@ -12,28 +12,21 @@ class Repository(
   val commits:      List[Commit]      = List(),
   val contributors: List[Contributor] = List()
 ) {
-  def getAllInfo(githubApiUrl: String, githubGetRepoCommitsPath: String): Promise[Repository] = {
+  def getAllInfo(githubApiUrl: String, githubGetRepoCommitsPath: String): Promise[Option[Repository]] = {
     WS.url(githubGetRepoCommitsPath.format(githubApiUrl, owner.get, name.get)).get().map { response =>
-      val commits = Repository.parseJsonCommits(response.json.as[List[JsValue]])
-      val contributors = Repository.computeContributors(commits)
+      if (response.json.toString == """{"message":"Not Found"}""") {
+        None
+      } else {
+        val commits = Repository.parseJsonCommits(response.json.as[List[JsValue]])
+        val contributors = Repository.computeContributors(commits)
 
-      Repository(this.owner, this.name, this.language, this.description, commits, contributors)
+        Some(Repository(this.owner, this.name, this.language, this.description, commits, contributors))
+      }
     }
   }
 }
 
 object Repository {
-  def apply(
-    owner:        Option[String]    = None,
-    name:         Option[String]    = None,
-    language:     Option[String]    = None,
-    description:  Option[String]    = None,
-    commits:      List[Commit]      = List(),
-    contributors: List[Contributor] = List()
-  ) = {
-    new Repository(owner, name, language, description, commits, contributors)
-  }
-
   def searchRepo(keyword: String, githubApiUrl: String, githubSearchReposPath: String): Promise[List[Repository]] = {
     WS.url(githubSearchReposPath.format(githubApiUrl, keyword)).get().map { response =>
       (response.json \ "repositories").as[List[JsValue]].map { repo =>
