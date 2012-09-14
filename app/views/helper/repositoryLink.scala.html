@@ -2,7 +2,7 @@
 
 @import revontulet.Util
 
-@defining(Util.trim(repo.owner.get.toString, '"') + "/" + Util.trim(repo.name.get.toString, '"')) { repositoryFullName =>
+@defining(Util.trim(repo.owner.getOrElse("").toString, '"') + "/" + Util.trim(repo.name.getOrElse("").toString, '"')) { repositoryFullName =>
   <a href="/@repositoryFullName">
     @repositoryFullName
   </a>

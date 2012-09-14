@@ -64,18 +64,19 @@ object Repository {
 
   def computeContributors(commits: List[Commit]): List[Contributor] = {
     var contributorsMap: Map[String, Contributor] = Map()
-    for (commit <- commits) {
-      val key = commit.author.get.username.getOrElse(commit.author.get.email.get)
+    for (commit <- commits; author <- commit.author) {
+      val key = author.username.getOrElse(author.email.getOrElse(""))
+
       contributorsMap.get(key) match {
         case Some(contributor) => {
           contributor.contributionsCounter = contributor.contributionsCounter + 1
         }
         case None => {
           val contributor = Contributor(
-            (commit.author.get.username),
-            (commit.author.get.name),
-            (commit.author.get.email),
-            (commit.author.get.avatarUrl),
+            (commit.author.getOrElse(new User).username),
+            (commit.author.getOrElse(new User).name),
+            (commit.author.getOrElse(new User).email),
+            (commit.author.getOrElse(new User).avatarUrl),
             1
           )
 
