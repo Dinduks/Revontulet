@@ -2,7 +2,7 @@
 
 @import views.html.helper._
 
-@main(repo.owner + "/" + repo.name + " - Repository info") {
+@main("%s/%s - Repository info".format(repo.owner.get, repo.name.get)) {
 <h1>@("%s/%s - Repository info".format(repo.owner.get, repo.name.get))</h1>
   <h2>Contributors</h2>
   <div>

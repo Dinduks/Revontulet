@@ -65,7 +65,8 @@ object Repository {
   def computeContributors(commits: List[Commit]): List[Contributor] = {
     var contributorsMap: Map[String, Contributor] = Map()
     for (commit <- commits) {
-      contributorsMap.get(commit.author.get.email.get) match {
+      val key = commit.author.get.username.getOrElse(commit.author.get.email.get)
+      contributorsMap.get(key) match {
         case Some(contributor) => {
           contributor.contributionsCounter = contributor.contributionsCounter + 1
         }
@@ -78,7 +79,7 @@ object Repository {
             1
           )
 
-          contributorsMap += (commit.author.get.email.get -> contributor)
+          contributorsMap += (key -> contributor)
         }
       }
     }
