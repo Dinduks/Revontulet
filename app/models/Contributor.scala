@@ -7,7 +7,7 @@ case class Contributor(
   override val name:      Option[String] = None,
   override val email:     Option[String] = None,
   override val avatarUrl: Option[String] = None,
-  var contributionsCounter: Int = 0
+  val contributionsCounter: Int = 0
 ) extends User(
   username,
   name,

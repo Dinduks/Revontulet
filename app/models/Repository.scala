@@ -62,7 +62,8 @@ object Repository {
 
       contributorsMap.get(key) match {
         case Some(contributor) => {
-          contributor.contributionsCounter = contributor.contributionsCounter + 1
+          val newContributor = contributor.copy(contributionsCounter = contributor.contributionsCounter + 1)
+          contributorsMap = contributorsMap - key + (key -> newContributor)
         }
         case None => {
           val contributor = Contributor(
