@@ -8,6 +8,7 @@
         @for(repo <- repos) {
             <li>
                 @repositoryLink(repo)
+                <span class="repo-description">@repo.description</span>
             </li>
         }
     </ul>
